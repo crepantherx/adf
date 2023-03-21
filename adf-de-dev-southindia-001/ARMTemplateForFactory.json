@@ -173,7 +173,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource",
+								"type": "SqlServerSource",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -221,7 +221,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource",
+								"type": "SqlServerSource",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -269,7 +269,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource",
+								"type": "SqlServerSource",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -317,7 +317,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource",
+								"type": "SqlServerSource",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -501,19 +501,28 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_onprem_dept_emp",
+					"referenceName": "LS_onprem_sqlDB",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "dept_no",
+						"type": "nchar"
+					},
+					{
+						"name": "dept_name",
+						"type": "nvarchar"
+					}
+				],
 				"typeProperties": {
 					"schema": "employees",
 					"table": "departments"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_dept_emp')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
 			]
 		},
 		{
@@ -522,19 +531,37 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_onprem_dept_emp",
+					"referenceName": "LS_onprem_sqlDB",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "emp_no",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "dept_no",
+						"type": "nchar"
+					},
+					{
+						"name": "from_date",
+						"type": "date"
+					},
+					{
+						"name": "to_date",
+						"type": "date"
+					}
+				],
 				"typeProperties": {
 					"schema": "employees",
 					"table": "dept_emp"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_dept_emp')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
 			]
 		},
 		{
@@ -543,19 +570,37 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_onprem_dept_emp",
+					"referenceName": "LS_onprem_sqlDB",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "emp_no",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "dept_no",
+						"type": "nchar"
+					},
+					{
+						"name": "from_date",
+						"type": "date"
+					},
+					{
+						"name": "to_date",
+						"type": "date"
+					}
+				],
 				"typeProperties": {
 					"schema": "employees",
 					"table": "dept_manager"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_dept_emp')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
 			]
 		},
 		{
@@ -651,19 +696,37 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_onprem_dept_emp",
+					"referenceName": "LS_onprem_sqlDB",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "emp_no",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "from_date",
+						"type": "date"
+					},
+					{
+						"name": "to_date",
+						"type": "date"
+					}
+				],
 				"typeProperties": {
 					"schema": "employees",
 					"table": "titles"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_dept_emp')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
 			]
 		},
 		{
