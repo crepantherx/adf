@@ -1,5 +1,5 @@
 {
-	"name": "DS_onprem_EmployeeDB_dept_emp",
+	"name": "DS_onprem_EmployeeDB_titles",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_onprem_dept_emp",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "employees",
-			"table": "dept_emp"
+			"table": "titles"
 		}
 	}
 }

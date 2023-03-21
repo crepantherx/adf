@@ -37,13 +37,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_onprem_dept_emp",
+						"referenceName": "DS_onprem_EmployeeDB_departments",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_onprem_EmployeeDB_departments",
+						"referenceName": "DS_ASQL_EmployeeDB_departments",
 						"type": "DatasetReference"
 					}
 				]
@@ -83,7 +83,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_onprem_dept_emp",
+						"referenceName": "DS_onprem_EmployeeDB_dept_emp",
 						"type": "DatasetReference"
 					}
 				],
@@ -175,13 +175,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_onprem_EmployeeDB_departments",
+						"referenceName": "DS_onprem_EmployeeDB_titles",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_ASQL_EmployeeDB_departments",
+						"referenceName": "DS_ASQL_EmployeeDB_titles",
 						"type": "DatasetReference"
 					}
 				]
