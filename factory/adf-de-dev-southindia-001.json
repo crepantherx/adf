@@ -1,0 +1,9 @@
+{
+	"name": "adf-de-dev-southindia-001",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "80835208-38aa-4fd2-a7a8-e6c47b82f337",
+		"tenantId": "d5f8e42b-9e63-4cf2-b8c0-9c16583cbf29"
+	}
+}
