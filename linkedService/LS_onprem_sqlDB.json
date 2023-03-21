@@ -1,0 +1,23 @@
+{
+	"name": "LS_onprem_sqlDB",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Data Source=ASUS;Initial Catalog=Employee;User ID=sudhir",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_kv_employeeDB",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "kv-onprem-sqlDB-password",
+				"secretVersion": "6b58b97db9fb4353bb5880e84487af6a"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IR-onprem-sqlDB",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
