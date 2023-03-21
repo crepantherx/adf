@@ -1,0 +1,16 @@
+{
+	"name": "DS_e_join_s",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_employeeDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "employees",
+			"table": "es"
+		}
+	}
+}
