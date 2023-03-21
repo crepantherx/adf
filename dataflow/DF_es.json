@@ -1,0 +1,76 @@
+{
+	"name": "DF_es",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_onprem_EmployeeDB_employees",
+						"type": "DatasetReference"
+					},
+					"name": "e"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_onprem_EmployeeDB_salaries",
+						"type": "DatasetReference"
+					},
+					"name": "s"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "temp"
+				},
+				{
+					"name": "f"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          emp_no as integer,",
+				"          birth_date as date,",
+				"          name as string,",
+				"          sur_name as string,",
+				"          gender as string,",
+				"          hire_date as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> e",
+				"source(output(",
+				"          emp_no as integer,",
+				"          salary as integer,",
+				"          from_date as date,",
+				"          to_date as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> s",
+				"e, s join(e@emp_no == s@emp_no,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> temp",
+				"temp select(mapColumn(",
+				"          emp_no = e@emp_no,",
+				"          birth_date,",
+				"          name,",
+				"          sur_name,",
+				"          gender,",
+				"          hire_date,",
+				"          emp_no = s@emp_no,",
+				"          salary,",
+				"          from_date,",
+				"          to_date",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> f"
+			]
+		}
+	}
+}

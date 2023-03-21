@@ -1,0 +1,42 @@
+{
+	"name": "DS_onprem_EmployeeDB_employees",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_onprem_sqlDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "emp_no",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "birth_date",
+				"type": "date"
+			},
+			{
+				"name": "name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sur_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "gender",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hire_date",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "employees",
+			"table": "employees"
+		}
+	}
+}

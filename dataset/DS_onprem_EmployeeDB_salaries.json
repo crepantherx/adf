@@ -1,0 +1,35 @@
+{
+	"name": "DS_onprem_EmployeeDB_salaries",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_onprem_sqlDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "emp_no",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "salary",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "from_date",
+				"type": "date"
+			},
+			{
+				"name": "to_date",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "employees",
+			"table": "salaries"
+		}
+	}
+}
