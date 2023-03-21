@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_employeeDB'"
 		},
+		"LS_onprem_dept_emp_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_onprem_dept_emp'"
+		},
 		"LS_onprem_sqlDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_onprem_sqlDB'",
@@ -53,6 +57,9 @@
 					},
 					"LS_ASQL_employeeDB_connectionString": {
 						"value": "[parameters('LS_ASQL_employeeDB_connectionString')]"
+					},
+					"LS_onprem_dept_emp_connectionString": {
+						"value": "[parameters('LS_onprem_dept_emp_connectionString')]"
 					},
 					"LS_onprem_sqlDB_connectionString": {
 						"value": "[parameters('LS_onprem_sqlDB_connectionString')]"

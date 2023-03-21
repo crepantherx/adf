@@ -8,6 +8,9 @@
 		"LS_ASQL_employeeDB_connectionString": {
 			"value": ""
 		},
+		"LS_onprem_dept_emp_connectionString": {
+			"value": ""
+		},
 		"LS_onprem_sqlDB_connectionString": {
 			"value": "Integrated Security=False;Data Source=ASUS;Initial Catalog=Employee;User ID=sudhir"
 		},
