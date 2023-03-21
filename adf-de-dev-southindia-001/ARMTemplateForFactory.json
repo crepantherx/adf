@@ -194,14 +194,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_onprem_dept_emp",
+								"referenceName": "DS_onprem_EmployeeDB_departments",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DS_onprem_EmployeeDB_departments",
+								"referenceName": "DS_ASQL_EmployeeDB_departments",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -242,7 +242,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_onprem_dept_emp",
+								"referenceName": "DS_onprem_EmployeeDB_dept_emp",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -338,14 +338,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_onprem_EmployeeDB_departments",
+								"referenceName": "DS_onprem_EmployeeDB_titles",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DS_ASQL_EmployeeDB_departments",
+								"referenceName": "DS_ASQL_EmployeeDB_titles",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -359,12 +359,14 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_dept_emp')]",
 				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_departments')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_departments')]",
+				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_dept_emp')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_dept_emp')]",
 				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_dept_manager')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_dept_manager')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_departments')]"
+				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_titles')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_titles')]"
 			]
 		},
 		{
@@ -473,6 +475,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_titles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_employeeDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "employees",
+					"table": "titles"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_departments')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -487,6 +510,27 @@
 				"typeProperties": {
 					"schema": "employees",
 					"table": "departments"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_dept_emp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_dept_emp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_onprem_dept_emp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "employees",
+					"table": "dept_emp"
 				}
 			},
 			"dependsOn": [
@@ -602,7 +646,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_dept_emp')]",
+			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_titles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -615,7 +659,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "employees",
-					"table": "dept_emp"
+					"table": "titles"
 				}
 			},
 			"dependsOn": [
