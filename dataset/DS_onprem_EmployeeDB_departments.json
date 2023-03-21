@@ -1,0 +1,25 @@
+{
+	"name": "DS_onprem_EmployeeDB_departments",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_onprem_sqlDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "dept_no",
+				"type": "nchar"
+			},
+			{
+				"name": "dept_name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "employees",
+			"table": "departments"
+		}
+	}
+}
