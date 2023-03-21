@@ -1,5 +1,5 @@
 {
-	"name": "salaries",
+	"name": "DS_ASQL_EmployeeDB_salaries",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_ASQL_employeeDB",

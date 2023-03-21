@@ -45,7 +45,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "employees",
+						"referenceName": "DS_ASQL_EmployeeDB_employees",
 						"type": "DatasetReference"
 					}
 				]
@@ -93,7 +93,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "salaries",
+						"referenceName": "DS_ASQL_EmployeeDB_salaries",
 						"type": "DatasetReference"
 					}
 				]

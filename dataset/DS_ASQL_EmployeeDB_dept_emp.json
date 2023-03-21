@@ -1,5 +1,5 @@
 {
-	"name": "DS_ASQL_EmployeeDB_employees",
+	"name": "DS_ASQL_EmployeeDB_dept_emp",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_ASQL_employeeDB",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "employees",
-			"table": "employees"
+			"table": "dept_emp"
 		}
 	}
 }
