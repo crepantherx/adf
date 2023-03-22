@@ -39,13 +39,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_onprem_EmployeeDB_departments",
+						"referenceName": "DS_onprem_EmployeeDB_dept_manager",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_ASSQL_EmployeeDB_departments",
+						"referenceName": "DS_ASSQL_EmployeeDB_dept_manager",
 						"type": "DatasetReference"
 					}
 				]
