@@ -1,0 +1,17 @@
+{
+	"name": "LS_CSV_onprem_db",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\ASUS\\db",
+			"userId": "crepantherx@gmail.com",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiNjBkY2JjYi02MjU1LTQ2NmUtYTlkZi1kZjQyNTY2NzcyYTciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-onprem-sqlDB",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
