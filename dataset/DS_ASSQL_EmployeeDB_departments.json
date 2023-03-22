@@ -1,0 +1,16 @@
+{
+	"name": "DS_ASSQL_EmployeeDB_departments",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_employeeDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "employees",
+			"table": "departments"
+		}
+	}
+}
