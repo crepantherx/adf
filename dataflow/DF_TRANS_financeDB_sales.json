@@ -3,11 +3,22 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_ASSQL_FinanceDB_sales",
+						"type": "DatasetReference"
+					},
+					"name": "MonthlySales"
+				}
+			],
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				""
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> MonthlySales"
 			]
 		}
 	}
