@@ -1,0 +1,69 @@
+{
+	"name": "DS_monthly_sales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_FinanceDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Monthly sales",
+				"type": "nvarchar"
+			},
+			{
+				"name": "January",
+				"type": "nvarchar"
+			},
+			{
+				"name": "February",
+				"type": "nvarchar"
+			},
+			{
+				"name": "March",
+				"type": "nvarchar"
+			},
+			{
+				"name": "April",
+				"type": "nvarchar"
+			},
+			{
+				"name": "May",
+				"type": "nvarchar"
+			},
+			{
+				"name": "June",
+				"type": "nvarchar"
+			},
+			{
+				"name": "July",
+				"type": "nvarchar"
+			},
+			{
+				"name": "August",
+				"type": "nvarchar"
+			},
+			{
+				"name": "September",
+				"type": "nvarchar"
+			},
+			{
+				"name": "October",
+				"type": "nvarchar"
+			},
+			{
+				"name": "November",
+				"type": "nvarchar"
+			},
+			{
+				"name": "December",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "finance",
+			"table": "sales"
+		}
+	}
+}

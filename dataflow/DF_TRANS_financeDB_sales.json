@@ -6,19 +6,45 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DS_ASSQL_FinanceDB_sales",
+						"referenceName": "DS_monthly_sales",
 						"type": "DatasetReference"
 					},
 					"name": "MonthlySales"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "unpivot1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          {Monthly sales} as string,",
+				"          January as string,",
+				"          February as string,",
+				"          March as string,",
+				"          April as string,",
+				"          May as string,",
+				"          June as string,",
+				"          July as string,",
+				"          August as string,",
+				"          September as string,",
+				"          October as string,",
+				"          November as string,",
+				"          December as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> MonthlySales"
+				"     format: 'table') ~> MonthlySales",
+				"MonthlySales unpivot(output(",
+				"          months as string,",
+				"          sales as string",
+				"     ),",
+				"     ungroupBy({Monthly sales}),",
+				"     lateral: true,",
+				"     ignoreNullPivots: false) ~> unpivot1"
 			]
 		}
 	}
