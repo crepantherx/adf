@@ -1,6 +1,220 @@
 {
 	"name": "PL_COPY_onprem_FinanceDB_to_azureSQL",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Monthly sales",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Monthly sales",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "January",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "January",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "February",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "February",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "March",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "March",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "April",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "April",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "May",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "May",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "June",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "June",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "July",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "July",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "August",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "August",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "September",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "September",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "October",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "October",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "November",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "November",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "December",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "December",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_CSV_finance_sales",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ASSQL_FinanceDB_sales",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
 		"annotations": []
 	}
 }
