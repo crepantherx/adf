@@ -1,0 +1,6 @@
+{
+	"name": "PL_COPY_onprem_amazonDB_to_azureSQL",
+	"properties": {
+		"annotations": []
+	}
+}
