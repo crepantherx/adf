@@ -1,0 +1,6 @@
+{
+	"name": "PL_COPY_onprem_FinanceDB_to_azureSQL",
+	"properties": {
+		"annotations": []
+	}
+}
