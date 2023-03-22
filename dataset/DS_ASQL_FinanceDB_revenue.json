@@ -1,0 +1,16 @@
+{
+	"name": "DS_ASQL_FinanceDB_revenue",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_FinanceDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "finance",
+			"table": "revenue"
+		}
+	}
+}
