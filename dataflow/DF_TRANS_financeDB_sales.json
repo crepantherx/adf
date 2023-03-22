@@ -24,6 +24,9 @@
 			"transformations": [
 				{
 					"name": "unpivot1"
+				},
+				{
+					"name": "cast1"
 				}
 			],
 			"scriptLines": [
@@ -53,7 +56,13 @@
 				"     ungroupBy({Monthly sales}),",
 				"     lateral: true,",
 				"     ignoreNullPivots: false) ~> unpivot1",
-				"unpivot1 sink(allowSchemaDrift: true,",
+				"unpivot1 cast(output(",
+				"          {Monthly sales} as integer,",
+				"          months as string,",
+				"          sales as integer '$###,###'",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
