@@ -7,9 +7,25 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-de-dev-southindia-001"
 		},
+		"LS_ASQL_FinanceDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_FinanceDB'"
+		},
+		"LS_ASQL_amazonDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_amazonDB'"
+		},
 		"LS_ASQL_employeeDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_employeeDB'"
+		},
+		"LS_CSV_onprem_amazon_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_amazon'"
+		},
+		"LS_CSV_onprem_db_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_db'"
 		},
 		"LS_onprem_dept_emp_connectionString": {
 			"type": "secureString",
@@ -23,6 +39,22 @@
 		"LS_AKV_onprem_sqlDB_password_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-sudhir.vault.azure.net/"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\asus\\warehouse_inventories"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "crepantherx@gmail.com"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\ASUS\\db"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "crepantherx@gmail.com"
 		},
 		"ls_kv_employeeDB_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -55,11 +87,23 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"LS_ASQL_FinanceDB_connectionString": {
+						"value": "[parameters('LS_ASQL_FinanceDB_connectionString')]"
+					},
+					"LS_ASQL_amazonDB_connectionString": {
+						"value": "[parameters('LS_ASQL_amazonDB_connectionString')]"
+					},
 					"LS_ASQL_employeeDB_connectionString": {
 						"value": "[parameters('LS_ASQL_employeeDB_connectionString')]"
 					},
 					"LS_onprem_dept_emp_connectionString": {
 						"value": "[parameters('LS_onprem_dept_emp_connectionString')]"
+					},
+					"LS_CSV_onprem_amazon_password": {
+						"value": "[parameters('LS_CSV_onprem_amazon_password')]"
+					},
+					"LS_CSV_onprem_db_password": {
+						"value": "[parameters('LS_CSV_onprem_db_password')]"
 					},
 					"LS_onprem_sqlDB_connectionString": {
 						"value": "[parameters('LS_onprem_sqlDB_connectionString')]"
@@ -69,10 +113,42 @@
 					},
 					"ls_kv_employeeDB_properties_typeProperties_baseUrl": {
 						"value": "[parameters('ls_kv_employeeDB_properties_typeProperties_baseUrl')]"
+					},
+					"LS_CSV_onprem_amazon_properties_typeProperties_host": {
+						"value": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_host')]"
+					},
+					"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
+						"value": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_userId')]"
+					},
+					"LS_CSV_onprem_db_properties_typeProperties_host": {
+						"value": "[parameters('LS_CSV_onprem_db_properties_typeProperties_host')]"
+					},
+					"LS_CSV_onprem_db_properties_typeProperties_userId": {
+						"value": "[parameters('LS_CSV_onprem_db_properties_typeProperties_userId')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "adf-de-dev-southindia-001_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-de-dev-southindia-001_ArmTemplate_0')]"
+			]
 		}
 	]
 }

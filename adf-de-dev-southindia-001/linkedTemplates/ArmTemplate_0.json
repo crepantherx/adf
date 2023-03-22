@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-de-dev-southindia-001"
 		},
+		"LS_ASQL_FinanceDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_FinanceDB'"
+		},
+		"LS_ASQL_amazonDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_amazonDB'"
+		},
 		"LS_ASQL_employeeDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_employeeDB'"
@@ -14,6 +22,14 @@
 		"LS_onprem_dept_emp_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_onprem_dept_emp'"
+		},
+		"LS_CSV_onprem_amazon_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_amazon'"
+		},
+		"LS_CSV_onprem_db_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_db'"
 		},
 		"LS_onprem_sqlDB_connectionString": {
 			"type": "secureString",
@@ -27,6 +43,22 @@
 		"ls_kv_employeeDB_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-sudhir.vault.azure.net/"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\asus\\warehouse_inventories"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "crepantherx@gmail.com"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\ASUS\\db"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "crepantherx@gmail.com"
 		}
 	},
 	"variables": {
@@ -42,6 +74,32 @@
 				"type": "AzureKeyVault",
 				"typeProperties": {
 					"baseUrl": "[parameters('LS_AKV_onprem_sqlDB_password_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ASQL_FinanceDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_ASQL_FinanceDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ASQL_amazonDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_ASQL_amazonDB_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -96,69 +154,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_departments')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL_employeeDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "departments"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_dept_emp')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL_employeeDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "dept_emp"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_dept_manager')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL_employeeDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "dept_manager"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_employees')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -201,7 +196,112 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_titles')]",
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_Amazon_orders')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_amazonDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "amazon",
+					"table": "orders"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_amazonDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_Amazon_warehouse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_amazonDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "amazon",
+					"table": "warehouses"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_amazonDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_EmployeeDB_departments')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_employeeDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "employees",
+					"table": "departments"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_EmployeeDB_dept_emp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_employeeDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "employees",
+					"table": "dept_emp"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_EmployeeDB_dept_manager')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_employeeDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "employees",
+					"table": "dept_manager"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_EmployeeDB_titles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -219,6 +319,75 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_FinanceDB_sales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_FinanceDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "finance",
+					"table": "sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_CSV_onprem_amazon')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_host')]",
+					"userId": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_CSV_onprem_amazon_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-onprem-sqlDB",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-onprem-sqlDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_CSV_onprem_db')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('LS_CSV_onprem_db_properties_typeProperties_host')]",
+					"userId": "[parameters('LS_CSV_onprem_db_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_CSV_onprem_db_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-onprem-sqlDB",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-onprem-sqlDB')]"
 			]
 		},
 		{
@@ -251,573 +420,77 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_departments')]",
+			"name": "[concat(parameters('factoryName'), '/DS_monthly_sales')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_onprem_sqlDB",
+					"referenceName": "LS_ASQL_FinanceDB",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "SqlServerTable",
+				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"name": "dept_no",
-						"type": "nchar"
+						"name": "Monthly sales",
+						"type": "nvarchar"
 					},
 					{
-						"name": "dept_name",
+						"name": "January",
+						"type": "nvarchar"
+					},
+					{
+						"name": "February",
+						"type": "nvarchar"
+					},
+					{
+						"name": "March",
+						"type": "nvarchar"
+					},
+					{
+						"name": "April",
+						"type": "nvarchar"
+					},
+					{
+						"name": "May",
+						"type": "nvarchar"
+					},
+					{
+						"name": "June",
+						"type": "nvarchar"
+					},
+					{
+						"name": "July",
+						"type": "nvarchar"
+					},
+					{
+						"name": "August",
+						"type": "nvarchar"
+					},
+					{
+						"name": "September",
+						"type": "nvarchar"
+					},
+					{
+						"name": "October",
+						"type": "nvarchar"
+					},
+					{
+						"name": "November",
+						"type": "nvarchar"
+					},
+					{
+						"name": "December",
 						"type": "nvarchar"
 					}
 				],
 				"typeProperties": {
-					"schema": "employees",
-					"table": "departments"
+					"schema": "finance",
+					"table": "sales"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_dept_emp')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_onprem_sqlDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "emp_no",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "dept_no",
-						"type": "nchar"
-					},
-					{
-						"name": "from_date",
-						"type": "date"
-					},
-					{
-						"name": "to_date",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "dept_emp"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_dept_manager')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_onprem_sqlDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "emp_no",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "dept_no",
-						"type": "nchar"
-					},
-					{
-						"name": "from_date",
-						"type": "date"
-					},
-					{
-						"name": "to_date",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "dept_manager"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_employees')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_onprem_sqlDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "emp_no",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "birth_date",
-						"type": "date"
-					},
-					{
-						"name": "name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "sur_name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "gender",
-						"type": "nvarchar"
-					},
-					{
-						"name": "hire_date",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "employees"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_salaries')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_onprem_sqlDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "emp_no",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "salary",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "from_date",
-						"type": "date"
-					},
-					{
-						"name": "to_date",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "salaries"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_titles')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_onprem_sqlDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "emp_no",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "from_date",
-						"type": "date"
-					},
-					{
-						"name": "to_date",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "employees",
-					"table": "titles"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_COPY_onpremempdb_to_azureSQL')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "dump into employees",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_onprem_EmployeeDB_employees",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_EmployeeDB_employees",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "dump into salaries",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_onprem_EmployeeDB_salaries",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_EmployeeDB_salaries",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_employees')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_employees')]",
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_salaries')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_salaries')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_onprem_EmployeeDB_departments",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_EmployeeDB_departments",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_onprem_EmployeeDB_dept_emp",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_EmployeeDB_dept_emp",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Copy data3",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_onprem_EmployeeDB_dept_manager",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_EmployeeDB_dept_manager",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Copy data4",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_onprem_EmployeeDB_titles",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_EmployeeDB_titles",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_departments')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_departments')]",
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_dept_emp')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_dept_emp')]",
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_dept_manager')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_dept_manager')]",
-				"[concat(variables('factoryId'), '/datasets/DS_onprem_EmployeeDB_titles')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_EmployeeDB_titles')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
 			]
 		}
 	]

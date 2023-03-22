@@ -5,7 +5,19 @@
 		"factoryName": {
 			"value": "adf-de-dev-southindia-001"
 		},
+		"LS_ASQL_FinanceDB_connectionString": {
+			"value": ""
+		},
+		"LS_ASQL_amazonDB_connectionString": {
+			"value": ""
+		},
 		"LS_ASQL_employeeDB_connectionString": {
+			"value": ""
+		},
+		"LS_CSV_onprem_amazon_password": {
+			"value": ""
+		},
+		"LS_CSV_onprem_db_password": {
 			"value": ""
 		},
 		"LS_onprem_dept_emp_connectionString": {
@@ -16,6 +28,18 @@
 		},
 		"LS_AKV_onprem_sqlDB_password_properties_typeProperties_baseUrl": {
 			"value": "https://kv-sudhir.vault.azure.net/"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_host": {
+			"value": "\\\\asus\\warehouse_inventories"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
+			"value": "crepantherx@gmail.com"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_host": {
+			"value": "\\\\ASUS\\db"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_userId": {
+			"value": "crepantherx@gmail.com"
 		},
 		"ls_kv_employeeDB_properties_typeProperties_baseUrl": {
 			"value": "https://kv-sudhir.vault.azure.net/"
