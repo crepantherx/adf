@@ -1,0 +1,16 @@
+{
+	"name": "DS_ASSQL_Amazon_warehouse",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_employeeDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "amazon",
+			"table": "warehouse"
+		}
+	}
+}
