@@ -1,0 +1,76 @@
+{
+	"name": "DS_CSV_finance_sales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_CSV_onprem_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "MonthlySales.csv",
+				"folderPath": "sales_report"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Monthly sales",
+				"type": "String"
+			},
+			{
+				"name": "January",
+				"type": "String"
+			},
+			{
+				"name": "February",
+				"type": "String"
+			},
+			{
+				"name": "March",
+				"type": "String"
+			},
+			{
+				"name": "April",
+				"type": "String"
+			},
+			{
+				"name": "May",
+				"type": "String"
+			},
+			{
+				"name": "June",
+				"type": "String"
+			},
+			{
+				"name": "July",
+				"type": "String"
+			},
+			{
+				"name": "August",
+				"type": "String"
+			},
+			{
+				"name": "September",
+				"type": "String"
+			},
+			{
+				"name": "October",
+				"type": "String"
+			},
+			{
+				"name": "November",
+				"type": "String"
+			},
+			{
+				"name": "December",
+				"type": "String"
+			}
+		]
+	}
+}
