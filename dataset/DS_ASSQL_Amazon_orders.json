@@ -2,7 +2,7 @@
 	"name": "DS_ASSQL_Amazon_orders",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_ASQL_employeeDB",
+			"referenceName": "LS_ASQL_amazonDB",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
