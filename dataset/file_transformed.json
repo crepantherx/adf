@@ -1,0 +1,21 @@
+{
+	"name": "file_transformed",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "transformed.parquet",
+				"folderPath": "silver",
+				"container": "intern"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
