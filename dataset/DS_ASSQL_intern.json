@@ -1,0 +1,16 @@
+{
+	"name": "DS_ASSQL_intern",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL_internDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "intern",
+			"table": "attendance"
+		}
+	}
+}
