@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "transformed.parquet",
-				"folderPath": "silver",
+				"folderPath": "silver/transformed.parquet",
 				"container": "intern"
 			},
 			"compressionCodec": "snappy"
