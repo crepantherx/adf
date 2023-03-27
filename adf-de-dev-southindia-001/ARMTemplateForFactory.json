@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_employeeDB'"
 		},
+		"LS_ASQL_internDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_internDB'"
+		},
 		"LS_CSV_onprem_amazon_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_amazon'"
@@ -26,6 +30,10 @@
 		"LS_CSV_onprem_db_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_db'"
+		},
+		"LS_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_blob'"
 		},
 		"LS_onprem_dept_emp_connectionString": {
 			"type": "secureString",
@@ -721,6 +729,79 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_intern')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "silver/transformed.parquet",
+									"wildcardFileName": "*.parquet",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "file_transformed",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_ASSQL_intern",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/file_transformed')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASSQL_intern')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_ASQL_EmployeeDB_employees')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -760,6 +841,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_employeeDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_FinanceDB_revenue')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_FinanceDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "finance",
+					"table": "revenue"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
 			]
 		},
 		{
@@ -907,6 +1009,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASSQL_intern')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_internDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "intern",
+					"table": "attendance"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_internDB')]"
 			]
 		},
 		{
@@ -1074,6 +1197,80 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_CSV_onprem_db')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_monthly_sales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL_FinanceDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Monthly sales",
+						"type": "nvarchar"
+					},
+					{
+						"name": "January",
+						"type": "nvarchar"
+					},
+					{
+						"name": "February",
+						"type": "nvarchar"
+					},
+					{
+						"name": "March",
+						"type": "nvarchar"
+					},
+					{
+						"name": "April",
+						"type": "nvarchar"
+					},
+					{
+						"name": "May",
+						"type": "nvarchar"
+					},
+					{
+						"name": "June",
+						"type": "nvarchar"
+					},
+					{
+						"name": "July",
+						"type": "nvarchar"
+					},
+					{
+						"name": "August",
+						"type": "nvarchar"
+					},
+					{
+						"name": "September",
+						"type": "nvarchar"
+					},
+					{
+						"name": "October",
+						"type": "nvarchar"
+					},
+					{
+						"name": "November",
+						"type": "nvarchar"
+					},
+					{
+						"name": "December",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "finance",
+					"table": "sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
 			]
 		},
 		{
@@ -1311,6 +1508,31 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/file_transformed')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "silver/transformed.parquet",
+						"container": "intern"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_blob')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS_AKV_onprem_sqlDB_password')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -1363,6 +1585,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LS_ASQL_internDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_ASQL_internDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS_CSV_onprem_amazon')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -1409,6 +1644,19 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/IR-onprem-sqlDB')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_blob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_blob_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_onprem_dept_emp')]",
@@ -1557,101 +1805,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_monthly_sales')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL_FinanceDB_revenue')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_monthly_sales')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL_FinanceDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Monthly sales",
-						"type": "nvarchar"
-					},
-					{
-						"name": "January",
-						"type": "nvarchar"
-					},
-					{
-						"name": "February",
-						"type": "nvarchar"
-					},
-					{
-						"name": "March",
-						"type": "nvarchar"
-					},
-					{
-						"name": "April",
-						"type": "nvarchar"
-					},
-					{
-						"name": "May",
-						"type": "nvarchar"
-					},
-					{
-						"name": "June",
-						"type": "nvarchar"
-					},
-					{
-						"name": "July",
-						"type": "nvarchar"
-					},
-					{
-						"name": "August",
-						"type": "nvarchar"
-					},
-					{
-						"name": "September",
-						"type": "nvarchar"
-					},
-					{
-						"name": "October",
-						"type": "nvarchar"
-					},
-					{
-						"name": "November",
-						"type": "nvarchar"
-					},
-					{
-						"name": "December",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "finance",
-					"table": "sales"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_FinanceDB_revenue')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL_FinanceDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "finance",
-					"table": "revenue"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL_FinanceDB')]"
 			]
 		}
 	]

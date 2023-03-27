@@ -6,6 +6,35 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-de-dev-southindia-001"
+		},
+		"LS_CSV_onprem_amazon_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_amazon'"
+		},
+		"LS_CSV_onprem_db_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_db'"
+		},
+		"LS_onprem_sqlDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_onprem_sqlDB'",
+			"defaultValue": "Integrated Security=False;Data Source=ASUS;Initial Catalog=Employee;User ID=sudhir"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\asus\\warehouse_inventories"
+		},
+		"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "crepantherx@gmail.com"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\ASUS\\db"
+		},
+		"LS_CSV_onprem_db_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "crepantherx@gmail.com"
 		}
 	},
 	"variables": {
@@ -13,7 +42,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_FinanceDB_revenue')]",
+			"name": "[concat(parameters('factoryName'), '/DS_monthly_sales')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -23,13 +52,231 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "Monthly sales",
+						"type": "nvarchar"
+					},
+					{
+						"name": "January",
+						"type": "nvarchar"
+					},
+					{
+						"name": "February",
+						"type": "nvarchar"
+					},
+					{
+						"name": "March",
+						"type": "nvarchar"
+					},
+					{
+						"name": "April",
+						"type": "nvarchar"
+					},
+					{
+						"name": "May",
+						"type": "nvarchar"
+					},
+					{
+						"name": "June",
+						"type": "nvarchar"
+					},
+					{
+						"name": "July",
+						"type": "nvarchar"
+					},
+					{
+						"name": "August",
+						"type": "nvarchar"
+					},
+					{
+						"name": "September",
+						"type": "nvarchar"
+					},
+					{
+						"name": "October",
+						"type": "nvarchar"
+					},
+					{
+						"name": "November",
+						"type": "nvarchar"
+					},
+					{
+						"name": "December",
+						"type": "nvarchar"
+					}
+				],
 				"typeProperties": {
 					"schema": "finance",
-					"table": "revenue"
+					"table": "sales"
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/file_transformed')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "silver/transformed.parquet",
+						"container": "intern"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_CSV_onprem_amazon')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_host')]",
+					"userId": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_CSV_onprem_amazon_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-onprem-sqlDB",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_CSV_onprem_db')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('LS_CSV_onprem_db_properties_typeProperties_host')]",
+					"userId": "[parameters('LS_CSV_onprem_db_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_CSV_onprem_db_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-onprem-sqlDB",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_onprem_sqlDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_onprem_sqlDB_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_kv_employeeDB",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "kv-onprem-sqlDB-password",
+						"secretVersion": "6b58b97db9fb4353bb5880e84487af6a"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-onprem-sqlDB",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_intern')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "silver/transformed.parquet",
+									"wildcardFileName": "*.parquet",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "file_transformed",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_ASSQL_intern",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/file_transformed')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_CSV_amazon_orders')]",
@@ -70,7 +317,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_CSV_onprem_amazon')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_CSV_amazon_warehouse')]",
@@ -111,7 +360,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_CSV_onprem_amazon')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_CSV_finance_sales')]",
@@ -190,7 +441,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_CSV_onprem_db')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_departments')]",
@@ -218,7 +471,9 @@
 					"table": "departments"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_dept_emp')]",
@@ -255,7 +510,9 @@
 					"table": "dept_emp"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_dept_manager')]",
@@ -292,7 +549,9 @@
 					"table": "dept_manager"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_employees')]",
@@ -337,7 +596,9 @@
 					"table": "employees"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_salaries')]",
@@ -375,7 +636,9 @@
 					"table": "salaries"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_onprem_EmployeeDB_titles')]",
@@ -412,7 +675,9 @@
 					"table": "titles"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_onprem_sqlDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DF_TRANS_financeDB_sales')]",
@@ -494,7 +759,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_FinanceDB_revenue')]"
+				"[concat(variables('factoryId'), '/datasets/DS_monthly_sales')]"
 			]
 		},
 		{

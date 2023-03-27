@@ -14,10 +14,16 @@
 		"LS_ASQL_employeeDB_connectionString": {
 			"value": ""
 		},
+		"LS_ASQL_internDB_connectionString": {
+			"value": ""
+		},
 		"LS_CSV_onprem_amazon_password": {
 			"value": ""
 		},
 		"LS_CSV_onprem_db_password": {
+			"value": ""
+		},
+		"LS_blob_connectionString": {
 			"value": ""
 		},
 		"LS_onprem_dept_emp_connectionString": {

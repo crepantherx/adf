@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_employeeDB'"
 		},
+		"LS_ASQL_internDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASQL_internDB'"
+		},
 		"LS_CSV_onprem_amazon_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_amazon'"
@@ -26,6 +30,10 @@
 		"LS_CSV_onprem_db_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_CSV_onprem_db'"
+		},
+		"LS_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_blob'"
 		},
 		"LS_onprem_dept_emp_connectionString": {
 			"type": "secureString",
@@ -96,35 +104,20 @@
 					"LS_ASQL_employeeDB_connectionString": {
 						"value": "[parameters('LS_ASQL_employeeDB_connectionString')]"
 					},
+					"LS_ASQL_internDB_connectionString": {
+						"value": "[parameters('LS_ASQL_internDB_connectionString')]"
+					},
+					"LS_blob_connectionString": {
+						"value": "[parameters('LS_blob_connectionString')]"
+					},
 					"LS_onprem_dept_emp_connectionString": {
 						"value": "[parameters('LS_onprem_dept_emp_connectionString')]"
-					},
-					"LS_CSV_onprem_amazon_password": {
-						"value": "[parameters('LS_CSV_onprem_amazon_password')]"
-					},
-					"LS_CSV_onprem_db_password": {
-						"value": "[parameters('LS_CSV_onprem_db_password')]"
-					},
-					"LS_onprem_sqlDB_connectionString": {
-						"value": "[parameters('LS_onprem_sqlDB_connectionString')]"
 					},
 					"LS_AKV_onprem_sqlDB_password_properties_typeProperties_baseUrl": {
 						"value": "[parameters('LS_AKV_onprem_sqlDB_password_properties_typeProperties_baseUrl')]"
 					},
 					"ls_kv_employeeDB_properties_typeProperties_baseUrl": {
 						"value": "[parameters('ls_kv_employeeDB_properties_typeProperties_baseUrl')]"
-					},
-					"LS_CSV_onprem_amazon_properties_typeProperties_host": {
-						"value": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_host')]"
-					},
-					"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
-						"value": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_userId')]"
-					},
-					"LS_CSV_onprem_db_properties_typeProperties_host": {
-						"value": "[parameters('LS_CSV_onprem_db_properties_typeProperties_host')]"
-					},
-					"LS_CSV_onprem_db_properties_typeProperties_userId": {
-						"value": "[parameters('LS_CSV_onprem_db_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -143,6 +136,27 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_CSV_onprem_amazon_password": {
+						"value": "[parameters('LS_CSV_onprem_amazon_password')]"
+					},
+					"LS_CSV_onprem_db_password": {
+						"value": "[parameters('LS_CSV_onprem_db_password')]"
+					},
+					"LS_onprem_sqlDB_connectionString": {
+						"value": "[parameters('LS_onprem_sqlDB_connectionString')]"
+					},
+					"LS_CSV_onprem_amazon_properties_typeProperties_host": {
+						"value": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_host')]"
+					},
+					"LS_CSV_onprem_amazon_properties_typeProperties_userId": {
+						"value": "[parameters('LS_CSV_onprem_amazon_properties_typeProperties_userId')]"
+					},
+					"LS_CSV_onprem_db_properties_typeProperties_host": {
+						"value": "[parameters('LS_CSV_onprem_db_properties_typeProperties_host')]"
+					},
+					"LS_CSV_onprem_db_properties_typeProperties_userId": {
+						"value": "[parameters('LS_CSV_onprem_db_properties_typeProperties_userId')]"
 					}
 				}
 			},
